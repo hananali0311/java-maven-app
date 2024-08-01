@@ -1,15 +1,28 @@
-pipeline {
-    agent any
+name: Build Java Application
 
-    tools {
-        maven 'maven-3.9' // This should match the name of your Maven installation in Jenkins
-    }
+on:
+  push:
+    branches:
+      - main
 
-    stages {
-        stage('Build') {
-            steps {
-                sh 'mvn -B -DskipTests clean package'
-            }
-        }
-    }
-}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin' # or 'adoptopenjdk'
+
+    - name: Set up Maven
+      uses: actions/setup-maven@v3
+      with:
+        maven-version: '3.9.0'
+
+    - name: Build with Maven
+      run: mvn -B -DskipTests clean package
