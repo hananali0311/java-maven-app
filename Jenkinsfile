@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    docker.build('hananali0311/javarepo:latest')
+                    docker.build('hananali0311/javarepo')
                 }
             }
         }
@@ -28,7 +28,7 @@ pipeline {
                 script {
                     // Push the Docker image to Docker Hub
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-                        docker.image('hananali0311/javarepo:latest').push('latest')
+                        docker.image('hananali0311/javarepo').push('latest')
                     }
                 }
             }
