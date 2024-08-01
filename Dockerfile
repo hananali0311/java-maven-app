@@ -1,11 +1,11 @@
-# Use an official OpenJDK runtime as a parent image
-FROM openjdk:17-jre-slim
+# Use Temurin JDK base image
+FROM eclipse-temurin:17-jre
 
-# Set the working directory in the container
-WORKDIR /app
+# Add application JAR file
+COPY target/my-app-1.0-SNAPSHOT.jar /usr/app/
 
-# Copy the JAR file into the container at /app
-COPY target/myjavaapp-1.0-SNAPSHOT.jar /app/myjavaapp.jar
+# Set working directory
+WORKDIR /usr/app
 
-# Run the JAR file
-ENTRYPOINT ["java", "-jar", "myjavaapp.jar"]
+# Command to run the application
+CMD ["java", "-jar", "my-app-1.0-SNAPSHOT.jar"]
