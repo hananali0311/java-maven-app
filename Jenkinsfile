@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Replace with the ID of your Docker Hub credentials in Jenkins
+        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials' // Replace with the ID of your Docker Hub credentials in Jenkins
         SUDO_PASSWORD_ID = 'sudo-password' // Replace with the ID of your sudo password credential in Jenkins
     }
 
