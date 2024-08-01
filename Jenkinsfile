@@ -19,19 +19,19 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    docker.build('hananali0311/javarepo:latest')
+                    sh 'sudo docker build -t hananali0311/javarepo:latest .'
                 }
             }
         }
         stage('Push Docker Image') {
             steps {
                 script {
-                    // Push the Docker image to Docker Hub
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-                        docker.image('hananali0311/javarepo:latest').push('latest')
+                     // Login to Docker Hub
+                    sh 'echo $DOCKERHUB_PASSWORD | sudo docker login -u $DOCKERHUB_USERNAME --password-stdin'
+                    // Push the Docker image to Docker Hub using sudo
+                    sh 'sudo docker push hananali0311/javarepo:latest'
                     }
                 }
             }
         }
     }
-}
