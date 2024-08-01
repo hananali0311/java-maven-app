@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_CREDENTIALS_ID = 'dock-hub-credentials' // Replace with the ID of your Docker Hub credentials in Jenkins
+        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Replace with the ID of your Docker Hub credentials in Jenkins
     }
 
     stages {
@@ -18,7 +18,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build the Docker image
+                    // Build the Docker image using sudo
                     sh 'sudo docker build -t hananali0311/javarepo:latest .'
                 }
             }
@@ -26,12 +26,14 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                     // Login to Docker Hub
-                    sh 'echo $DOCKERHUB_PASSWORD | sudo docker login -u $DOCKERHUB_USERNAME --password-stdin'
-                    // Push the Docker image to Docker Hub using sudo
-                    sh 'sudo docker push hananali0311/javarepo:latest'
+                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        // Login to Docker Hub
+                        sh 'echo $DOCKERHUB_PASSWORD | sudo docker login -u $DOCKERHUB_USERNAME --password-stdin'
+                        // Push the Docker image to Docker Hub using sudo
+                        sh 'sudo docker push hananali0311/javarepo:latest'
                     }
                 }
             }
         }
     }
+}
