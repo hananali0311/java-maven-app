@@ -9,7 +9,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials' // Your Docker Hub credentials ID
         SSH_CREDENTIALS_ID = 'ubuntu-app-server' // Your Jenkins SSH credentials ID for EC2
         EC2_USER = 'ubuntu' // Username for EC2
-        EC2_HOST = '13.48.45.173' // Your EC2 instance IP address
+        EC2_HOST = '16.170.220.113' // Your EC2 instance IP address
     }
 
     stages {
