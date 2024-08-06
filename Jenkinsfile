@@ -41,19 +41,10 @@ pipeline {
                 sshagent([SSH_CREDENTIALS_ID]) {
                     script {
                         // SSH into the EC2 instance and deploy the Docker container
-                        sh '''
-                        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} << 'EOF'
-                        # Stop and remove any existing container with the same name
-                        docker stop dazzling_turing || true
-                        docker rm dazzling_turing || true
-
-                        # Pull the latest Docker image from Docker Hub
-                        docker pull hananali0311/javarepo:latest
-
-                        # Run the new Docker container
-                        docker run -d --name dazzling_turing hananali0311/javarepo:latest
-                        EOF
-                        '''
+                        sh "ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 'docker stop dazzling_turing || true'"
+                        sh "ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 'docker rm dazzling_turing || true'"
+                        sh "ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 'docker pull hananali0311/javarepo:latest'"
+                        sh "ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} 'docker run -d --name dazzling_turing hananali0311/javarepo:latest'"
                     }
                 }
             }
