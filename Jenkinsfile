@@ -44,14 +44,14 @@ pipeline {
                         sh '''
                         ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} << EOF
                         # Stop and remove any existing container with the same name
-                        docker stop myapp || true
-                        docker rm myapp || true
+                        docker stop dazzling_turing || true
+                        docker rm dazzling_turing || true
 
                         # Pull the latest Docker image from Docker Hub
                         docker pull hananali0311/javarepo:latest
 
                         # Run the new Docker container
-                        docker run -d --name myapp hananali0311/javarepo:latest
+                        docker run -d --name dazzling_turing hananali0311/javarepo:latest
                         EOF
                         '''
                     }
