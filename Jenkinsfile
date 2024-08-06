@@ -7,6 +7,9 @@ pipeline {
 
     environment {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials' // Your Docker Hub credentials ID
+        SSH_CREDENTIALS_ID = 'ubuntu-app-server' // Your Jenkins SSH credentials ID for EC2
+        EC2_USER = 'ubuntu' // Username for EC2
+        EC2_HOST = '13.48.45.173' // Your EC2 instance IP address
     }
 
     stages {
@@ -29,6 +32,28 @@ pipeline {
                     // Push the Docker image to Docker Hub
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
                         docker.image('hananali0311/javarepo:latest').push('latest')
+                    }
+                }
+            }
+        }
+        stage('Deploy to EC2') {
+            steps {
+                sshagent([SSH_CREDENTIALS_ID]) {
+                    script {
+                        // SSH into the EC2 instance and deploy the Docker container
+                        sh '''
+                        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} << EOF
+                        # Stop and remove any existing container with the same name
+                        docker stop myapp || true
+                        docker rm myapp || true
+
+                        # Pull the latest Docker image from Docker Hub
+                        docker pull hananali0311/javarepo:latest
+
+                        # Run the new Docker container
+                        docker run -d --name myapp hananali0311/javarepo:latest
+                        EOF
+                        '''
                     }
                 }
             }
