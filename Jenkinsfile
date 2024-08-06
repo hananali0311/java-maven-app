@@ -42,7 +42,7 @@ pipeline {
                     script {
                         // SSH into the EC2 instance and deploy the Docker container
                         sh '''
-                        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} << EOF
+                        ssh -o StrictHostKeyChecking=no ${EC2_USER}@${EC2_HOST} << 'EOF'
                         # Stop and remove any existing container with the same name
                         docker stop dazzling_turing || true
                         docker rm dazzling_turing || true
