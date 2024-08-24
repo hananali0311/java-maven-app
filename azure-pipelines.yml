@@ -1,0 +1,22 @@
+# azure-pipelines.yml
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UseJavaVersion@0
+  inputs:
+    versionSpec: '17'  # Specify the JDK version you want to use
+    addToPath: true
+
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'  # Path to your Maven POM file
+    goals: 'package'  # Maven goal to build the .jar file
+    options: '-DskipTests'  # Skip tests if desired
+
+- script: |
+    java -jar target/my-app-1.0-SNAPSHOT.jar
+  displayName: 'Run Java Application'
