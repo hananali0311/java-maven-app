@@ -1,23 +1,23 @@
-# azure-pipelines.yml
 trigger:
-- main
+- master
 
 pool:
-  vmImage: 'ubuntu-latest'  # Use the appropriate VM image
+  vmImage: 'ubuntu-latest'
 
 steps:
 - script: |
-    echo "Checking Java version"
-    java -version
-    javac -version
-  displayName: 'Check Java Installation'
-
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    goals: 'package'
-    options: '-DskipTests'
+    sudo apt-get update
+    sudo apt-get install -y openjdk-17-jdk maven   # Installs JDK 17 and Maven
+    echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
+    echo "M2_HOME=/usr/share/maven" >> $GITHUB_ENV
+  displayName: 'Install JDK 17 and Maven'
 
 - script: |
-    java -jar target/my-app-1.0-SNAPSHOT.jar
+    echo "Running Maven Build"
+    mvn clean install               # Command to build your Maven project
+  displayName: 'Maven Build'
+
+- script: |
+    echo "Running Java Application"
+    java -jar target/my-app-1.0-SNAPSHOT.jar    # Command to run the built .jar file
   displayName: 'Run Java Application'
