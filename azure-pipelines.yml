@@ -8,8 +8,10 @@ steps:
 - script: |
     sudo apt-get update
     sudo apt-get install -y openjdk-17-jdk maven   # Installs JDK 17 and Maven
-    echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
-    echo "M2_HOME=/usr/share/maven" >> $GITHUB_ENV
+    export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
+    export M2_HOME=/usr/share/maven
+    echo "JAVA_HOME is set to $JAVA_HOME"
+    echo "M2_HOME is set to $M2_HOME"
   displayName: 'Install JDK 17 and Maven'
 
 - script: |
